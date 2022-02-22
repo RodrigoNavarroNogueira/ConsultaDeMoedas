@@ -12,9 +12,14 @@ def exibir_consulta(request, coin, moeda):
     bid = coins[coin]
     print(f'Valor do {moeda} atualizado: R${bid["bid"][:4]}')
     print(f'Dia e hora da consulta: {bid["create_date"]}')
-    print(f'Dia da consulta: {bid["create_date"][:10]}')
+    data = bid["create_date"][:10]
+    dia = data[8:10]
+    mes = data[5:7]
+    ano = data[:4]
+    print(f'Dia da consulta: {dia}-{mes}-{ano}')
     
 
+    
 def escolha_a_opcao():
     option = int(input("""
 Selecione a opção que você deseja:
@@ -48,4 +53,3 @@ Selecione a opção que você deseja:
 
 mensagem_de_abertura()
 escolha_a_opcao()
-
