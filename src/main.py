@@ -10,13 +10,17 @@ def mensagem_de_abertura():
 def exibir_consulta(request, coin, moeda):
     coins = request.json()
     bid = coins[coin]
-    print(f'Valor do {moeda} atualizado: R${bid["bid"][:4]}')
-    print(f'Dia e hora da consulta: {bid["create_date"]}')
+    if coin == "BTCBRL":
+        print(f'Valor do {moeda} atualizado: R${bid["bid"][:6]}')
+    else:
+        print(f'Valor do {moeda} atualizado: R${bid["bid"][:4]}')
     data = bid["create_date"][:10]
+    hora = bid["create_date"][11:19]
     dia = data[8:10]
     mes = data[5:7]
     ano = data[:4]
     print(f'Dia da consulta: {dia}-{mes}-{ano}')
+    print(f'Hora: {hora}')
     
 
     
@@ -25,6 +29,8 @@ def escolha_a_opcao():
 Selecione a opção que você deseja:
 [ 1 ] - Visualizar Dolar
 [ 2 ] - Visualizar Euro
+[ 3 ] - Visualizar Bitcoin
+[ 4 ] - Sair do programa
     """))
     
     if option == 1:
@@ -37,11 +43,21 @@ Selecione a opção que você deseja:
         coin = "EURBRL"
         moeda = "euro"
 
+    elif option == 3:
+        request = requests.get(f'http://economia.awesomeapi.com.br/json/last/BTC-BRL')
+        coin = "BTCBRL"
+        moeda = "bitcoin"
+
+    elif option == 4:
+        print('Encerrando programa, até logo!')
+        exit()
+
     exibir_consulta(request, coin, moeda)
 
     nova_consulta = str()
 
     while nova_consulta == '' or nova_consulta not in 'SN':
+        print('--------------------------------------------------------------')
         nova_consulta = input('Deseja realizar uma nova consulta? (S) para SIM e (N) para NÃO\n').upper()
 
     if nova_consulta == "S":
